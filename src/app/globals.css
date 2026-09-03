@@ -1,0 +1,141 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap");
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   SecureCaseVault design tokens (Tailwind v4 @theme)
+   Dark navy base + cyan/blue security accents.
+--------------------------------------------------------------------------- */
+@theme {
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", "Manrope", ui-sans-serif, sans-serif;
+
+  --color-base: #050b16; /* page background */
+  --color-panel: #0a1322; /* cards / surfaces */
+  --color-panel-2: #0d1a2e; /* raised surfaces */
+  --color-field: #0b1626; /* input backgrounds */
+  --color-line: #152440; /* subtle borders */
+  --color-line-2: #1f3355; /* stronger borders */
+  --color-ink: #e4edfb; /* primary text */
+  --color-mut: #8aa3c9; /* secondary text */
+  --color-mut-2: #5c769e; /* tertiary text */
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+  body {
+    @apply bg-base text-ink font-sans antialiased;
+  }
+  ::selection {
+    background: rgba(34, 211, 238, 0.25);
+  }
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #1f3355 transparent;
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #16263f;
+    border-radius: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+@layer components {
+  /* Surfaces */
+  .card {
+    @apply rounded-xl border border-line bg-panel;
+  }
+  .card-hover {
+    @apply transition-colors duration-150 hover:border-line-2;
+  }
+
+  /* Buttons */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-3.5 py-2 text-sm font-semibold transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/40 disabled:pointer-events-none disabled:opacity-50;
+  }
+  .btn-primary {
+    @apply bg-cyan-400 text-[#04212b] hover:bg-cyan-300;
+  }
+  .btn-ghost {
+    @apply border border-line-2 bg-transparent text-mut hover:border-cyan-400/40 hover:text-ink;
+  }
+  .btn-danger {
+    @apply border border-rose-500/30 bg-rose-500/10 text-rose-300 hover:bg-rose-500/20;
+  }
+  .btn-sm {
+    @apply rounded-md px-2.5 py-1.5 text-xs;
+  }
+
+  /* Form controls */
+  .label {
+    @apply mb-1.5 block text-[11px] font-bold uppercase tracking-wider text-mut;
+  }
+  .input {
+    @apply w-full rounded-lg border border-line-2 bg-field px-3 py-2 text-sm text-ink placeholder:text-mut-2 transition focus:border-cyan-400/60 focus:outline-none focus:ring-1 focus:ring-cyan-400/30;
+  }
+  select.input {
+    @apply appearance-none bg-no-repeat pr-8;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%238aa3c9' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-position: right 0.75rem center;
+  }
+
+  /* Tables */
+  .th {
+    @apply px-4 py-3 text-left text-[11px] font-bold uppercase tracking-wider text-mut-2;
+  }
+  .td {
+    @apply px-4 py-3 text-sm;
+  }
+}
+
+/* Faint blueprint grid used behind the login screen and headers */
+.bg-grid {
+  background-image: linear-gradient(rgba(56, 189, 248, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(56, 189, 248, 0.05) 1px, transparent 1px);
+  background-size: 34px 34px;
+}
+
+/* Gentle entrance animation — used sparingly on page-level blocks */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.anim-rise {
+  animation: rise 0.35s ease-out both;
+}
+.anim-rise-1 {
+  animation: rise 0.35s ease-out 0.05s both;
+}
+.anim-rise-2 {
+  animation: rise 0.35s ease-out 0.1s both;
+}
+.anim-rise-3 {
+  animation: rise 0.35s ease-out 0.15s both;
+}
+
+/* Small pulsing dot for "live" indicators */
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+.pulse-dot {
+  animation: pulse-dot 2s ease-in-out infinite;
+}

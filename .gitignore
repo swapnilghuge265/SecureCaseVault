@@ -1,0 +1,18 @@
+# Dependencies
+node_modules/
+
+# Next.js build output
+.next/
+out/
+
+# Environment — never commit real values
+.env
+.env.local
+.env*.local
+
+# Local development encryption key (auto-generated; use an env var in deployments)
+data/
+
+# Logs & OS noise
+*.log
+.DS_Store
