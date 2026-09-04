@@ -435,6 +435,10 @@ function UploadModal({
   async function submit() {
     if (!caseId) return setError("Please select a case.");
     if (!file) return setError("Please choose a file to upload.");
+
+if (file.size > 10 * 1024 * 1024) {
+  return setError("File size exceeds the maximum allowed limit of 10 MB.");
+}
     setError("");
     setLoading(true);
     try {
