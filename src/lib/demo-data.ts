@@ -30,13 +30,7 @@ export interface DemoUser {
   h: number; // account age in hours
 }
 
-export const DEMO_USERS: DemoUser[] = [
-  { username: "admin", email: "admin@securecasevault.local", fullName: "Avery Stone", role: "administrator", password: "Admin@12345", h: 45 * 24 },
-  { username: "investigator", email: "ivy.chen@securecasevault.local", fullName: "Ivy Chen", role: "investigator", password: "Investigator@12345", h: 30 * 24 },
-  { username: "s.reyes", email: "sofia.reyes@securecasevault.local", fullName: "Sofia Reyes", role: "investigator", password: "Investigator2@12345", h: 40 * 24 },
-  { username: "legal", email: "marcus.reid@securecasevault.local", fullName: "Marcus Reid", role: "legal_officer", password: "Legal@12345", h: 21 * 24 },
-  { username: "viewer", email: "noah.patel@securecasevault.local", fullName: "Noah Patel", role: "viewer", password: "Viewer@12345", h: 3 * 24 },
-];
+export const DEMO_USERS: DemoUser[] = [];
 
 // --- Cases --------------------------------------------------------------------
 export interface DemoCase {
