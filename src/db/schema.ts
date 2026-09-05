@@ -88,14 +88,20 @@ export const sessions = pgTable("sessions", {
   ipAddress: text("ip_address"),
 
   createdAt: timestamp("created_at", {
-    withTimezone: true,
-  })
-    .notNull()
-    .defaultNow(),
+  withTimezone: true,
+})
+  .notNull()
+  .defaultNow(),
 
-  expiresAt: timestamp("expires_at", {
-    withTimezone: true,
-  }).notNull(),
+lastActivity: timestamp("last_activity", {
+  withTimezone: true,
+})
+  .notNull()
+  .defaultNow(),
+
+expiresAt: timestamp("expires_at", {
+  withTimezone: true,
+}).notNull(),
 });
 
 // --- Cases -----------------------------------------------------------------

@@ -14,7 +14,7 @@
 import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { documents } from "@/db/schema";
-import { clientIp, requireApiUser } from "@/lib/auth";
+import { can, clientIp, requireApiUser } from "@/lib/auth";
 import { canAccessDocument } from "@/lib/visibility";
 import { decryptBuffer } from "@/lib/encryption";
 import { logAudit } from "@/lib/audit";
@@ -33,13 +33,15 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
   const [doc] = await db.select().from(documents).where(eq(documents.id, Number(id)));
   if (!doc) return Response.json({ error: "Document not found." }, { status: 404 });
 
-  // Authorize before serving bytes — this is the last line of defense if
-  // a stale link or a crafted URL points at a document the user cannot
-  // otherwise see (e.g. a viewer guessing document ids). Denied attempts
-  // are audited (success=false) and fed to rule R5.
-  if (!(await canAccessDocument(session.user, doc))) {
+    // Only administrators may download document files.
+  // All other roles can remain subject to normal document visibility,
+  // but the file bytes must never be served to them.
+  if (!can(session.user.role, "deleteDocument")) {
     await logDocumentAccessDenied(session.user, req, doc.name);
-    return Response.json({ error: "You do not have access to this document." }, { status: 403 });
+    return Response.json(
+      { error: "Only administrators can download documents." },
+      { status: 403 },
+    );
   }
 
   // Decrypt only for an authorized reader. Failures (wrong key, tampered

@@ -21,7 +21,8 @@ import { sessions, users } from "@/db/schema";
 export type Role = "administrator" | "investigator" | "legal_officer" | "viewer";
 
 const COOKIE_NAME = "scv_session";
-const SESSION_DAYS = 7;
+const SESSION_HOURS = 8;
+const INACTIVITY_MINUTES = 10;
 
 export interface SessionUser {
   id: number;
@@ -46,7 +47,7 @@ export function clientIp(req: Request): string {
 // sessionCookieHeaders() so they can be tuned per transport.
 export async function createSession(userId: number, ip: string) {
   const token = crypto.randomBytes(32).toString("hex");
-  const expiresAt = new Date(Date.now() + SESSION_DAYS * 86_400_000);
+  const expiresAt = new Date(Date.now() + SESSION_HOURS * 3_600_000);
 
   await db.insert(sessions).values({ id: token, userId, ipAddress: ip, expiresAt });
 
@@ -145,6 +146,17 @@ export async function getSessionUser(): Promise<{ user: SessionUser; session: Se
     await db.delete(sessions).where(eq(sessions.id, row.id));
     return null;
   }
+  const inactivityLimit = INACTIVITY_MINUTES * 60 * 1000;
+
+if (row.lastActivity.getTime() + inactivityLimit < Date.now()) {
+  await db.delete(sessions).where(eq(sessions.id, row.id));
+  return null;
+}
+
+await db
+  .update(sessions)
+  .set({ lastActivity: new Date() })
+  .where(eq(sessions.id, row.id));
 
   const [user] = await db.select().from(users).where(eq(users.id, row.userId));
   if (!user || user.status !== "active") return null;
