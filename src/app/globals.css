@@ -9,21 +9,52 @@
   --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Space Grotesk", "Manrope", ui-sans-serif, sans-serif;
 
-  --color-base: #050b16; /* page background */
-  --color-panel: #0a1322; /* cards / surfaces */
-  --color-panel-2: #0d1a2e; /* raised surfaces */
-  --color-field: #0b1626; /* input backgrounds */
-  --color-line: #152440; /* subtle borders */
-  --color-line-2: #1f3355; /* stronger borders */
-  --color-ink: #e4edfb; /* primary text */
-  --color-mut: #8aa3c9; /* secondary text */
-  --color-mut-2: #5c769e; /* tertiary text */
+  --color-base: var(--theme-base);
+  --color-panel: var(--theme-panel);
+  --color-panel-2: var(--theme-panel-2);
+  --color-field: var(--theme-field);
+  --color-line: var(--theme-line);
+  --color-line-2: var(--theme-line-2);
+  --color-ink: var(--theme-ink);
+  --color-mut: var(--theme-mut);
+  --color-mut-2: var(--theme-mut-2);
+}
+:root,
+.dark {
+  --theme-base: #050b16;
+  --theme-panel: #0a1322;
+  --theme-panel-2: #0d1a2e;
+  --theme-field: #0b1626;
+  --theme-line: #152440;
+  --theme-line-2: #1f3355;
+  --theme-ink: #e4edfb;
+  --theme-mut: #8aa3c9;
+  --theme-mut-2: #5c769e;
 }
 
+.light {
+  --theme-base: #e9eef5;
+  --theme-panel: #f3f6fa;
+  --theme-panel-2: #e1e8f1;
+  --theme-field: #edf2f7;
+  --theme-line: #c8d3e0;
+  --theme-line-2: #aebdce;
+  --theme-ink: #1e293b;
+  --theme-mut: #52647a;
+  --theme-mut-2: #718096;
+}
 @layer base {
   html {
-    color-scheme: dark;
-  }
+  color-scheme: light dark;
+}
+
+html.light {
+  color-scheme: light;
+}
+
+html.dark {
+  color-scheme: dark;
+}
   body {
     @apply bg-base text-ink font-sans antialiased;
   }

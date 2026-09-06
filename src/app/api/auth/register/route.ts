@@ -8,17 +8,20 @@ import bcrypt from "bcryptjs";
 
 import { db } from "@/db";
 import { users } from "@/db/schema";
+
 import {
+  clientDevice,
   clientIp,
   createSession,
   sessionCookieHeaders,
 } from "@/lib/auth";
+
 import { logAudit } from "@/lib/audit";
 import { raiseAlert } from "@/lib/alerts";
 import { ensureDevData } from "@/lib/bootstrap";
 
 export async function POST(req: Request) {
-  await ensureDevData(); // same dev bootstrap as the login route
+  await ensureDevData();
 
   const ip = clientIp(req);
 
@@ -151,7 +154,13 @@ export async function POST(req: Request) {
   );
 
   // Auto sign-in after successful registration.
-  const { token } = await createSession(inserted.id, ip);
+  const device = clientDevice(req);
+
+  const { token } = await createSession(
+    inserted.id,
+    ip,
+    device,
+  );
 
   await logAudit(
     {
@@ -166,6 +175,7 @@ export async function POST(req: Request) {
 
   // Authentication is handled through the HttpOnly session cookie.
   // The session token is intentionally NOT returned to the client.
+
   const headers = new Headers({
     "Content-Type": "application/json",
   });

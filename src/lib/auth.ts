@@ -40,17 +40,51 @@ export interface SessionUser {
 export function clientIp(req: Request): string {
   return req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "127.0.0.1";
 }
+export function clientDevice(req: Request): string {
+  const userAgent = req.headers.get("user-agent")?.toLowerCase() || "";
+
+  if (/android/.test(userAgent)) {
+    return "📱 Android";
+  }
+
+  if (/iphone|ipad|ipod/.test(userAgent)) {
+    return "📱 iPhone/iPad";
+  }
+
+  if (/windows/.test(userAgent)) {
+    return "🖥️ Windows";
+  }
+
+  if (/macintosh|mac os x/.test(userAgent)) {
+    return "🍎 macOS";
+  }
+
+  if (/linux/.test(userAgent)) {
+    return "🐧 Linux";
+  }
+
+  return "🌐 Other";
+}
 
 // Create the session row (the Flask-Login `login_user()` equivalent: the
 // random 256-bit token IS the session, looked up in the database on every
 // request). The route handler attaches the cookie headers via
 // sessionCookieHeaders() so they can be tuned per transport.
-export async function createSession(userId: number, ip: string) {
+export async function createSession(
+  userId: number,
+  ip: string,
+  device: string,
+) {
   const token = crypto.randomBytes(32).toString("hex");
   const expiresAt = new Date(Date.now() + SESSION_HOURS * 3_600_000);
 
-  await db.insert(sessions).values({ id: token, userId, ipAddress: ip, expiresAt });
-
+  await db.insert(sessions).values({
+  id: token,
+  userId,
+  ipAddress: ip,
+  device,
+  expiresAt,
+});
   return { token, expiresAt };
 }
 

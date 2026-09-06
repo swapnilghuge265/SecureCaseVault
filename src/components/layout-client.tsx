@@ -52,11 +52,12 @@ const NAV: {
     ],
   },
   {
-    group: "Security",
-    items: [
-      { href: "/audit", label: "Audit Logs", icon: IconList, adminOnly: true },
-      { href: "/alerts", label: "Security Alerts", icon: IconBell, adminOnly: true },
-    ],
+   group: "Security",
+items: [
+  { href: "/audit", label: "Audit Logs", icon: IconList, adminOnly: true },
+  { href: "/sessions", label: "Active Sessions", icon: IconShield, adminOnly: true },
+  { href: "/alerts", label: "Security Alerts", icon: IconBell, adminOnly: true },
+],
   },
   {
     group: "Account",

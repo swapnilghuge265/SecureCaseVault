@@ -86,6 +86,7 @@ export const sessions = pgTable("sessions", {
     }),
 
   ipAddress: text("ip_address"),
+  device: text("device"),
 
   createdAt: timestamp("created_at", {
   withTimezone: true,

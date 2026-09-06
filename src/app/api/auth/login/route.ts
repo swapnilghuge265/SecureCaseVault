@@ -7,7 +7,7 @@ import { eq } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 import { db } from "@/db";
 import { users } from "@/db/schema";
-import { clientIp, createSession, sessionCookieHeaders } from "@/lib/auth";
+import { clientDevice, clientIp, createSession, sessionCookieHeaders } from "@/lib/auth";
 import { logAudit } from "@/lib/audit";
 import { checkFailedLoginRules } from "@/lib/detection";
 import { ensureDevData } from "@/lib/bootstrap";
@@ -64,7 +64,8 @@ export async function POST(req: Request) {
     return Response.json({ error: "This account has been suspended." }, { status: 403 });
   }
 
-  const { token } = await createSession(user.id, ip);
+  const device = clientDevice(req);
+const { token } = await createSession(user.id, ip, device);
   await logAudit(
     {
       userId: user.id,

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+
 import "./globals.css";
+import ThemeProvider from "@/components/theme-provider";
 
 export const metadata: Metadata = {
   title: {
@@ -11,10 +13,16 @@ export const metadata: Metadata = {
     "Prototype platform for managing sensitive legal and investigation documents: upload, search, audit and securely share.",
 };
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: ReactNode;
+}) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <ThemeProvider>{children}</ThemeProvider>
+      </body>
     </html>
   );
 }

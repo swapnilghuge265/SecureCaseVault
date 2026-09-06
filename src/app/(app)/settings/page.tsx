@@ -6,6 +6,7 @@ import { requireUser } from "@/lib/auth";
 import { PERMISSION_DESCRIPTIONS } from "@/lib/auth";
 import { ROLE_META, formatDate, formatDateTime } from "@/lib/format";
 import { Badge, PageHeader } from "@/components/ui";
+import ThemeSelector from "@/components/theme-selector";
 import {
   EndSessionButton,
   NotificationToggles,
@@ -23,7 +24,7 @@ export const metadata: Metadata = { title: "Settings" };
 
 const SECURITY_FACTS = [
   { title: "Password storage", sub: "Passwords are hashed with bcrypt (cost 10) — plain text is never stored." },
-  { title: "Session security", sub: "Random 256-bit tokens in httpOnly cookies; sessions expire after 7 days." },
+  { title: "Session security", sub: "Random 256-bit tokens in httpOnly cookies; sessions expire after 8 hours, with a 10-minute inactivity timeout." },
   { title: "Role-based access", sub: "Every API route and UI action is checked against the role permission matrix." },
   { title: "Encryption at rest", sub: "Document bytes are encrypted with AES-256-GCM before they reach the database. The key lives only in the SCV_ENCRYPTION_KEY environment variable — never in the database, never in the frontend, never in code." },
   { title: "Document integrity", sub: "Each upload is fingerprinted with a SHA-256 hash for integrity verification. That is a different job from encryption — one checks the file hasn’t changed, the other protects it from being read." },
@@ -61,6 +62,9 @@ export default async function SettingsPage() {
             <h2 className="font-display text-sm font-semibold">Notification preferences</h2>
           </div>
           <NotificationToggles user={account} />
+          <div className="mt-6 border-t border-line pt-6">
+  <ThemeSelector />
+</div>
         </div>
 
         {/* Active session */}
