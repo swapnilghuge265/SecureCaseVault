@@ -1,4 +1,5 @@
 import RevokeSessionsButton from "@/components/revoke-sessions-button";
+import SessionDate from "@/components/session-date";
 import { redirect } from "next/navigation";
 
 import { and, desc, eq, gt } from "drizzle-orm";
@@ -91,15 +92,21 @@ export default async function SessionsPage() {
                   </td>
 
                   <td className="td whitespace-nowrap text-sm">
-                    {session.createdAt.toLocaleString()}
+                    <SessionDate
+                      date={session.createdAt.toISOString()}
+                    />
                   </td>
 
                   <td className="td whitespace-nowrap text-sm">
-                    {session.lastActivity.toLocaleString()}
+                    <SessionDate
+                      date={session.lastActivity.toISOString()}
+                    />
                   </td>
 
                   <td className="td whitespace-nowrap text-sm">
-                    {session.expiresAt.toLocaleString()}
+                    <SessionDate
+                      date={session.expiresAt.toISOString()}
+                    />
                   </td>
 
                   <td className="td">
