@@ -45,9 +45,13 @@ export default function UsersClient({
         body: JSON.stringify(body),
       });
       const data = await res.json();
-      if (!res.ok) setError(data.error ?? "The change could not be applied.");
-      setConfirmSuspend(null);
-      router.refresh();
+      if (!res.ok) {
+  setError(data.error ?? "The change could not be applied.");
+  return;
+}
+
+setConfirmSuspend(null);
+router.refresh();
     } finally {
       setBusyId(null);
     }
